@@ -1,5 +1,5 @@
 {
-  "name": "dare-couples-game",
+  "name": "couples-Game",
   "version": "1.0.0",
   "description": "A fun, real-time web game for couples: truth/dare, chat, voice, drawing, and more!",
   "main": "src/index.js",
@@ -29,6 +29,6 @@
     "websocket",
     "webrtc"
   ],
-  "author": "DenicFX",
+  "author": "DenicFusion",
   "license": "MIT"
 }
