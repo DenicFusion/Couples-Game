@@ -1,1 +1,23 @@
-
+const dares = [
+  "Send a voice note whispering something sexy.",
+  "Text your partner the last thing you thought about them that made you blush.",
+  "Describe, in detail, what you’d do to your partner if you were together right now.",
+  "Change your profile pic to something silly for 10 minutes.",
+  "Write a short steamy poem about your partner and send it.",
+  "Send a GIF that describes your current mood (the naughtier the better).",
+  "Share a hidden talent with your partner by sending a video or audio.",
+  "Pretend you’re a famous flirt and text your partner a pickup line.",
+  "List three things you want to do with your partner next time you meet.",
+  "Challenge your partner to a truth or dare round of your own!",
+  "Record a voice note saying something sexy.",
+  "Send a meme that describes your mood.",
+  "Write a steamy message using only emojis.",
+  "Draw a picture of your partner and send it.",
+  "Change your contact name for me to something cute or spicy.",
+  "Send a selfie with your sexiest look.",
+  "Make up a secret handshake and describe it.",
+  "Sing a romantic song to your partner (voice note).",
+  "Describe your favorite memory of us, using only emojis.",
+  "Send a voice note mimicking your favorite celebrity flirting.",
+];
+export default dares;
