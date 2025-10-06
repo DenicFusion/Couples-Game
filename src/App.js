@@ -14,7 +14,7 @@ export default function App() {
   if (stage === "lobby") {
     return (
       <div style={{ maxWidth: 400, margin: "80px auto", textAlign: "center" }}>
-        <h1 style={{ color: "#e75480" }}>ðŸ’– Dare or Double Dare: Couples Edition ðŸ’–</h1>
+        <h1 style={{ color: "#e75480" }}>💖 Dare or Double Dare: Couples Edition 💖</h1>
         <input
           placeholder="Your Name"
           value={playerName}
@@ -49,7 +49,7 @@ export default function App() {
           Join Room
         </button>
         <footer style={{ marginTop: 40, fontSize: 12, color: "#999" }}>
-          Made for couples who love fun! ðŸ’‹<br />
+          Made for couples who love fun! 💋<br />
         </footer>
       </div>
     );
@@ -58,4 +58,4 @@ export default function App() {
   return (
     <GameRoom roomCode={roomCode} playerName={playerName} isInitiator={isInitiator} />
   );
-                                     }
+                                       }
