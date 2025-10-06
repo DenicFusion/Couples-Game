@@ -1,4 +1,4 @@
-# Dare Couples Game
+# couples-Game
 
 A fun, real-time web game for couples: truth/dare, chat, voice, drawing, and more!  
 Play together from anywhere using a secure room code.
@@ -21,8 +21,8 @@ Play together from anywhere using a secure room code.
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/DenicFusion/couples-game.git
-cd dare-couples-game
+git clone https://github.com/DenicFusion/couples-Game.git
+cd couples-Game
 ```
 
 ### 2. Install dependencies
@@ -96,4 +96,4 @@ MIT — Have fun and play responsibly!
 
 ---
 
-_Made with ❤️ by DenicFX_
+_Made with ❤️ by DenicFusion_
