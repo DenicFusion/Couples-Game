@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import questions from "./questions";
 import dares from "./dares";
 import Chat from "./Chat";
 import VoiceChat from "./VoiceChat";
 import DrawingBoard from "./DrawingBoard";
-import { connectSocket, sendMessage } from './api.js';
+import { connectSocket } from './api.js';
 
 const socket = connectSocket();
 
@@ -14,7 +14,7 @@ function getRandomItem(arr) {
 
 export default function GameRoom({ roomCode, playerName, isInitiator }) {
   const [players, setPlayers] = useState([playerName, "Waiting..."]);
-  const [currentPlayer, setCurrentPlayer] = useState(0);
+  const [currentPlayer, setCurrentPlayer] = useState(Math.floor(Math.random() * 2));
   const [step, setStep] = useState("question");
   const [currentQuestion, setCurrentQuestion] = useState(getRandomItem(questions));
   const [currentDare, setCurrentDare] = useState("");
@@ -22,29 +22,58 @@ export default function GameRoom({ roomCode, playerName, isInitiator }) {
   const [messages, setMessages] = useState([]);
   const [timer, setTimer] = useState(30);
   const [score, setScore] = useState([0, 0]);
+  const [feedbackPhase, setFeedbackPhase] = useState(false);
   const timerRef = useRef();
 
   // Timer logic
-  React.useEffect(() => {
-    if (step === "question" || step === "dare") {
+  useEffect(() => {
+    clearInterval(timerRef.current);
+    if (step === "question" || step === "dare" || feedbackPhase) {
       setTimer(30);
-      clearInterval(timerRef.current);
       timerRef.current = setInterval(() => setTimer((t) => t - 1), 1000);
     }
     return () => clearInterval(timerRef.current);
-  }, [step]);
+  }, [step, feedbackPhase]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (timer === 0) {
-      nextTurn();
+      if (feedbackPhase) {
+        setFeedbackPhase(false);
+        nextTurn();
+      } else {
+        setFeedbackPhase(true);
+      }
     }
   }, [timer]);
 
+  // Socket: receive chat messages
+  useEffect(() => {
+    socket.on("chat-message", (data) => {
+      setMessages((prev) => [...prev, data]);
+    });
+
+    return () => {
+      socket.off("chat-message");
+    };
+  }, []);
+
   const handleTruth = () => setStep("answer");
+
   const handleDare = () => {
     setCurrentDare(getRandomItem(dares));
     setStep("dare");
   };
+
+  const handleSatisfied = (response) => {
+    if (response === "yes") {
+      setFeedbackPhase(false);
+      nextTurn();
+    } else {
+      setFeedbackPhase(true);
+      setTimer(30); // Give 30 seconds to respond
+    }
+  };
+
   const nextTurn = () => {
     setHistory([
       ...history,
@@ -65,9 +94,18 @@ export default function GameRoom({ roomCode, playerName, isInitiator }) {
     setCurrentQuestion(getRandomItem(questions));
     setCurrentDare("");
     setStep("question");
+    setFeedbackPhase(false);
   };
 
-  const handleChatSend = (msg) => setMessages([...messages, msg]);
+  const handleChatSend = (msg) => {
+    const messageData = {
+      roomCode,
+      sender: players[currentPlayer],
+      text: msg,
+    };
+    socket.emit("chat-message", messageData); // Send to server
+    setMessages((prev) => [...prev, messageData]); // Show locally
+  };
 
   return (
     <div style={{ maxWidth: 900, margin: "auto" }}>
@@ -86,7 +124,7 @@ export default function GameRoom({ roomCode, playerName, isInitiator }) {
       </div>
       <div style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
         <div style={{ flex: 2 }}>
-          {step === "question" && (
+          {!feedbackPhase && step === "question" && (
             <>
               <div style={{ fontSize: 18, fontWeight: "bold", margin: "10px 0" }}>Truth or Dare?</div>
               <div style={{ background: "#fff0f5", padding: 18, borderRadius: 10, fontSize: 19 }}>
@@ -100,24 +138,36 @@ export default function GameRoom({ roomCode, playerName, isInitiator }) {
               </div>
             </>
           )}
-          {step === "answer" && (
+          {!feedbackPhase && step === "answer" && (
             <div>
               <h3>{players[currentPlayer]}:</h3>
               <p>Type your answer out loud or in chat! (Be honest 😉)</p>
-              <button onClick={nextTurn} style={{ marginTop: 16 }}>
-                Next Turn
+              <button onClick={() => setFeedbackPhase(true)} style={{ marginTop: 16 }}>
+                Done Answering
               </button>
             </div>
           )}
-          {step === "dare" && (
+          {!feedbackPhase && step === "dare" && (
             <div>
               <h3>{players[currentPlayer]}:</h3>
               <div style={{ background: "#fff0f5", padding: 18, borderRadius: 10, fontSize: 18 }}>
                 Your Double Dare: {currentDare}
               </div>
-              <button onClick={nextTurn} style={{ marginTop: 16 }}>
-                Next Turn
+              <button onClick={() => setFeedbackPhase(true)} style={{ marginTop: 16 }}>
+                Done with Dare
               </button>
+            </div>
+          )}
+          {feedbackPhase && (
+            <div style={{ marginTop: 16 }}>
+              <h3>Are you satisfied with {players[currentPlayer]}'s response?</h3>
+              <button onClick={() => handleSatisfied("yes")} style={{ marginRight: 12 }}>
+                Yes 👍
+              </button>
+              <button onClick={() => handleSatisfied("no")}>No 👎</button>
+              <p style={{ marginTop: 8, fontStyle: "italic" }}>
+                If “No,” you have 30 seconds to say your mind...
+              </p>
             </div>
           )}
           <div style={{ marginTop: 28 }}>
@@ -141,4 +191,4 @@ export default function GameRoom({ roomCode, playerName, isInitiator }) {
       </div>
     </div>
   );
-                    }
+}
