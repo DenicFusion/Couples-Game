@@ -4,7 +4,9 @@ import dares from "./dares";
 import Chat from "./Chat";
 import VoiceChat from "./VoiceChat";
 import DrawingBoard from "./DrawingBoard";
+import { connectSocket, sendMessage } from './api.js';
 
+const socket = connectSocket();
 function getRandomItem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
