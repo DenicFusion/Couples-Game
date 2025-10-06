@@ -21,7 +21,7 @@ Play together from anywhere using a secure room code.
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/DenicFusion/dare-couples-game.git
+git clone https://github.com/DenicFusion/couples-game.git
 cd dare-couples-game
 ```
 
