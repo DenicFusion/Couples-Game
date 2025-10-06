@@ -1,1 +1,34 @@
-
+{
+  "name": "dare-couples-game",
+  "version": "1.0.0",
+  "description": "A fun, real-time web game for couples: truth/dare, chat, voice, drawing, and more!",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "server": "node server/signaling.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "simple-peer": "^9.11.1",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "react-scripts": "5.0.1"
+  },
+  "keywords": [
+    "couples",
+    "game",
+    "truth-or-dare",
+    "react",
+    "websocket",
+    "webrtc"
+  ],
+  "author": "DenicFX",
+  "license": "MIT"
+}
