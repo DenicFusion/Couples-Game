@@ -7,6 +7,7 @@ import DrawingBoard from "./DrawingBoard";
 import { connectSocket, sendMessage } from './api.js';
 
 const socket = connectSocket();
+
 function getRandomItem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -37,7 +38,6 @@ export default function GameRoom({ roomCode, playerName, isInitiator }) {
     if (timer === 0) {
       nextTurn();
     }
-    // eslint-disable-next-line
   }, [timer]);
 
   const handleTruth = () => setStep("answer");
@@ -141,4 +141,4 @@ export default function GameRoom({ roomCode, playerName, isInitiator }) {
       </div>
     </div>
   );
-        }
+                    }

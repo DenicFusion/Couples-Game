@@ -1,5 +1,5 @@
 // src/api.js
-const SIGNALING_SERVER_URL = "wss://couples-game-1-us4z.onrender.com";
+export const SIGNALING_SERVER_URL = "wss://couples-game-1-us4z.onrender.com";
 
 let socket;
 
